@@ -33,3 +33,5 @@ app.post("/api/movies", movieHandlers.postMovie);//Express3*/
 app.post("/api/users", usersHandlers.postUsers);
 app.put("/api/movies/:id", movieHandlers.updateMovie);//Express4*/
 app.put("/api/users/:id", usersHandlers.updateUsers);
+app.delete("/api/movies/:id", movieHandlers.deleteMovie);//Express5*/
+app.delete("/api/users/:id", usersHandlers.deleteUsers);
