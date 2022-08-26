@@ -67,6 +67,7 @@ const updateUsers = (req, res) => {
       res.status(500).send("Error editing the movie");
     });
 };
+//Express5*/
 const deleteUsers = (req, res) => {
   const id = parseInt(req.params.id);
 
