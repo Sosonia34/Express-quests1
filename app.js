@@ -30,3 +30,6 @@ app.listen(port, (err) => {
 });
 
 app.post("/api/movies", movieHandlers.postMovie);//Express3*/
+app.post("/api/users", usersHandlers.postUsers);
+app.put("/api/movies/:id", movieHandlers.updateMovie);//Express4*/
+app.put("/api/users/:id", usersHandlers.updateUsers);
