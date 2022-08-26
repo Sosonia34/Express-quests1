@@ -30,15 +30,15 @@ const getUsersById = (req, res) => {
 }
 //Express 03 */
 const postUsers = (req, res) => {
-  const { title, director, year, color, duration } = req.body;
+  const { firstname, lastname, email, city, language } = req.body;
 
   database
     .query(
       "INSERT INTO users(title, director, year, color, duration) VALUES (?, ?, ?, ?, ?)",
-      [title, director, year, color, duration]
+      [firstname, lastname, email, city, language]
     )
     .then(([result]) => {
-      res.location(`/api/movies/${result.insertId}`).sendStatus(201);
+      res.location(`/api/users/${result.insertId}`).sendStatus(201);
     })
     .catch((err) => {
       console.error(err);
