@@ -38,3 +38,5 @@ app.put("/api/movies/:id", movieHandlers.updateMovie);//Express4*/
 app.put("/api/users/:id", usersHandlers.updateUsers);
 app.delete("/api/movies/:id", movieHandlers.deleteMovie);//Express5*/
 app.delete("/api/users/:id", usersHandlers.deleteUsers);
+app.put("/api/movies/:id", validateMovie, movieHandlers.updateMovie);//Express4bis*/
+app.put("/api/users/:id", validateUsers, usersHandler.updateUsers);
