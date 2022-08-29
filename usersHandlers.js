@@ -102,8 +102,8 @@ const getUserByLanguage =(req, res) => {
 
   database
     .query(sql, sqlValue)
-    .then(([movies]) => {
-      res.json(movies);
+    .then(([users]) => {
+      res.json(users).status(200);
     })
     .catch((err) => {
       console.error(err);
