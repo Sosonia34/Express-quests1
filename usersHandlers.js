@@ -110,6 +110,30 @@ const getUserByLanguage =(req, res) => {
       res.status(500).send("Error retrieving data from database");
     });
 };
+//Express4bis*/
+const Joi = require("joi");
+
+const userSchema = Joi.object({
+  email: Joi.string().email().max(255).required(),
+  firstname: Joi.string().max(255).required(),
+  lastname: Joi.string().max(255).required(),
+});
+
+const validateUser = [
+  body("email").isEmail(),
+  body("firstname").isLength({ max: 255 }),
+  body("lastname").isLength({ max: 255 }),
+  (req, res, next) => {
+    const errors = validationResult(req);
+
+    if (!errors.isEmpty()) {
+      res.status(422).json({ validationErrors: errors.array() });
+    } else {
+      next();
+    }
+  },
+];
+
 module.exports = {
     getUsersById,
     getUsers,

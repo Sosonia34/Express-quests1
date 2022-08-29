@@ -15,11 +15,14 @@ app.get("/", welcome);
 
 const movieHandlers = require("./movieHandlers");
 const usersHandlers = require("./usersHandlers");//Express02*/
+const { validateMovie } = require("./validators.js");//Express 4bis*/
 
+app.post("/api/movies", validateMovie, movieHandlers.postMovie);
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);
 app.get("/api/users", usersHandlers.getUsers);
 app.get("/api/users/:id", usersHandlers.getUsersById);//Express02*/
+
 
 app.listen(port, (err) => {
   if (err) {
