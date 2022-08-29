@@ -85,8 +85,32 @@ const deleteUsers = (req, res) => {
       res.status(500).send("Error deleting the movie");
     });
 };
+/*Express6*/
+const getUserByLanguage =(req, res) => {
+  let sql = "select * from users";
+  const sqlValue = [];
 
-  module.exports = {
+  if (req.query.language) {
+    sql += " where language = ?";
+    sqlValue.push(req.query.language);
+  }
+
+  if (req.query.city) {
+    sql += " where city = ?";
+    sqlValue.push(req.query.city);
+  }
+
+  database
+    .query(sql, sqlValue)
+    .then(([movies]) => {
+      res.json(movies);
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving data from database");
+    });
+};
+module.exports = {
     getUsersById,
     getUsers,
     postUsers,
