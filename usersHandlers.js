@@ -28,6 +28,26 @@ const getUsersById = (req, res) => {
     res.status(500).send("Error retrieving data from database");
   });
 }
+//Express 08*/
+const getUserByEmailWithPasswordAndPassToNext = (req, res, next) => {
+  const { email } = req.body;
+
+  database
+    .query("select * from users where email = ?", [email])
+    .then(([users]) => {
+      if (users[0] != null) {
+        req.user = users[0];
+
+        next();
+      } else {
+        res.sendStatus(401);
+      }
+    })
+    .catch((err) => {
+      console.error(err);
+      res.status(500).send("Error retrieving data from database");
+    });
+};
 //Express 03 */ //express07*/
 const postUsers = (req, res) => {
   const { firstname, lastname, email, city, language, hashedPassword } = req.body;
@@ -58,7 +78,11 @@ database
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.status(404).send("Not Found");
-      } else {
+      } //express08 bonus
+      else if (req.payload.sub !== id) {
+        res.sendStatus(403);
+      }
+      else {
         res.sendStatus(204);
       }
     })
@@ -75,7 +99,11 @@ database
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.status(404).send("Not Found");
-      } else {
+      } //express08 bonus
+      else if (req.payload.sub !== id) {
+        res.sendStatus(403);
+      }
+      else{
         res.sendStatus(204);
       }
     })
@@ -111,6 +139,7 @@ database
 
 module.exports ={
     getUsersById,
+    getUserByEmailWithPasswordAndPassToNext
     getUsers,
     postUsers,
     updateUsers,
