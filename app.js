@@ -17,8 +17,9 @@ const movieHandlers = require("./movieHandlers");
 const usersHandlers = require("./usersHandlers");//Express02*/
 const { validateMovie } = require("./validators.js");//Express 4bis*/
 const { validateUsers } = require ("./validators.js");
+const { hashedPassword } = require ("./auth.js"); //Express 07*/
 
-
+app.post("/api/users", hashedPassword, usersHandlers.postUser);//Express 07*/
 app.post("/api/movies", validateMovie, movieHandlers.postMovie);
 app.get("/api/movies", movieHandlers.getMovies);
 app.get("/api/movies/:id", movieHandlers.getMovieById);

@@ -1,7 +1,8 @@
 const database = require("./database");
+
 const getUsers = (req, res) => {
   database
-  .query("select * from users")
+  .query("select firstname, lastname, email, city, language from users")//express07*/
   .then(([users]) => {
     res.json(users);
   })
@@ -13,9 +14,8 @@ const getUsers = (req, res) => {
 //EXPRESS 02*/
 const getUsersById = (req, res) => {
     const id = parseInt(req.params.id);
-   
-  database
-  .query("select * from users where id = ?", [id])
+   //express07*/
+  query("select firstname, lastname, email, city, language from users where id = ?", [id])
   .then(([users]) => {
     if (users[0] != null) {
       res.json(users[0]).status(200);
@@ -28,14 +28,15 @@ const getUsersById = (req, res) => {
     res.status(500).send("Error retrieving data from database");
   });
 }
-//Express 03 */
+//Express 03 */ //express07*/
 const postUsers = (req, res) => {
-  const { firstname, lastname, email, city, language } = req.body;
+  const { firstname, lastname, email, city, language, hashedPassword } = req.body;
+  
 
-  database
-    .query(
-      "INSERT INTO users(firstname, lastname, email, city, language) VALUES (?, ?, ?, ?, ?)",
-      [firstname, lastname, email, city, language]
+database //express07*/
+  .query(
+      "INSERT INTO users(firstname, lastname, email, city, language, hashedPassword) VALUES (?, ?, ?, ?, ?, ?)",
+      [firstname, lastname, email, city, language, hashedPassword]
     )
     .then(([result]) => {
       res.location(`/api/users/${result.insertId}`).sendStatus(201);
@@ -49,9 +50,8 @@ const postUsers = (req, res) => {
 const updateUsers = (req, res) => {
   const id = parseInt(req.params.id);
   const { firstname, lastname, email, city, language } = req.body;
-
-  database
-    .query(
+database
+  .query(
       "update users set firstname = ?, lastname = ?, email = ?  city = ?,  language = ?, where id = ?",
       [firstname, lastname, email, city, language, id]
     )
@@ -70,9 +70,8 @@ const updateUsers = (req, res) => {
 //Express5*/
 const deleteUsers = (req, res) => {
   const id = parseInt(req.params.id);
-
-  database
-    .query("delete from users where id = ?", [id])
+database
+  .query("delete from users where id = ?", [id])
     .then(([result]) => {
       if (result.affectedRows === 0) {
         res.status(404).send("Not Found");
@@ -99,9 +98,8 @@ const getUserByLanguage =(req, res) => {
     sql += " where city = ?";
     sqlValue.push(req.query.city);
   }
-
-  database
-    .query(sql, sqlValue)
+database
+  .query(sql, sqlValue)
     .then(([users]) => {
       res.json(users).status(200);
     })
@@ -110,31 +108,8 @@ const getUserByLanguage =(req, res) => {
       res.status(500).send("Error retrieving data from database");
     });
 };
-//Express4bis*/
-const Joi = require("joi");
 
-const userSchema = Joi.object({
-  email: Joi.string().email().max(255).required(),
-  firstname: Joi.string().max(255).required(),
-  lastname: Joi.string().max(255).required(),
-});
-
-const validateUser = [
-  body("email").isEmail(),
-  body("firstname").isLength({ max: 255 }),
-  body("lastname").isLength({ max: 255 }),
-  (req, res, next) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      res.status(422).json({ validationErrors: errors.array() });
-    } else {
-      next();
-    }
-  },
-];
-
-module.exports = {
+module.exports ={
     getUsersById,
     getUsers,
     postUsers,
